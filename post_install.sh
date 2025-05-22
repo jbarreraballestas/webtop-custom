@@ -15,6 +15,15 @@ if ! command -v composer &> /dev/null; then
   exit 1
 fi
 
+# Asegurar que npm esté disponible para laravel
+if ! command -v npm &> /dev/null; then
+  echo "⚠️ NPM no está instalado o no está en el PATH."
+  curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+  sudo apt install -y nodejs
+  sudo npm install -g npm
+fi
+
+
 # Laravel installer
 echo "📦 Instalando Laravel globalmente..."
 composer global require laravel/installer
