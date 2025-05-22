@@ -23,7 +23,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # -------------------- PHP 8.4 + Composer --------------------
-    RUN add-apt-repository ppa:ondrej/php -y && \
+RUN add-apt-repository ppa:ondrej/php -y && \
     apt-get update && \
     apt-get install -y \
     php8.4 php8.4-cli php8.4-common \
