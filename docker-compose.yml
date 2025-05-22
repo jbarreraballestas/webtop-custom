@@ -1,0 +1,22 @@
+services:
+  webtop:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: webtop-custom
+    hostname: webtop-custom
+    ports:
+      - "3000:3000"
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Bogota
+      - CUSTOM_USER=${USER}
+      - PASSWORD=${PASSWORD}
+      - TITLE=Webtop Custom
+      - LC_ALL=es_CO.UTF-8
+    volumes:
+      - ./config:/config
+      - ./post_install.sh:/config/post_install.sh:ro
+    shm_size: "2gb"
+    restart: unless-stopped
