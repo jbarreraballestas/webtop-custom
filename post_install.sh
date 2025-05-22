@@ -60,7 +60,6 @@ usuario='\u'
 host='\h'
 git='$(__git_ps1 " (%s)")'
 directorio='\w'
-export PS1='\u@\h\[\033[01;34m\] \w\[\033[0;32m\]$(__git_ps1 " (%s)")\[\033[01;34m\]$\[\033[00m\] '
 command="export PS1='$verde1$usuario@$host $azul1$directorio$verde0$git$azul0$ $fncolor'"
 echo $command >> /config/.bashrc
 source /config/.bashrc
