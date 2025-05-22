@@ -50,18 +50,4 @@ if [[ "$laravel" == "y" ]]; then
   fi
 fi
 
-# Agregar colores a la terminal bash
-azul0='\[\033[0;34m\]'
-azul1='\[\033[1;34m\]'
-verde0='\[\033[0;32m\]'
-verde1='\[\033[1;32m\]'
-fncolor='\[\033[0;00m\]'
-usuario='\u'
-host='\h'
-git='$(__git_ps1 " (%s)")'
-directorio='\w'
-command="export PS1='$verde1$usuario@$host $azul1$directorio$verde0$git$azul0$ $fncolor'"
-echo $command >> /config/.bashrc
-source /config/.bashrc
-
 echo "✅ Configuración completada."

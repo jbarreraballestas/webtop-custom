@@ -39,10 +39,12 @@ RUN wget -O vscode.deb https://go.microsoft.com/fwlink/?LinkID=760868 && \
     rm -f vscode.deb && \
     echo "alias code='code --no-sandbox --user-data-dir=/tmp/vscode-data'" >> /etc/bash.bashrc
 
-# -------------------- Git - Bash --------------------
+# -------------------- Git - Bash - Colors --------------------
 RUN apt-get install -y bash-completion && \
     curl -o /etc/bash_completion.d/git-prompt.sh https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh && \
-    echo 'source /etc/bash_completion.d/git-prompt.sh' >> /etc/bash.bashrc
+    echo 'source /etc/bash_completion.d/git-prompt.sh' >> /etc/bash.bashrc && \
+    echo "export PS1='\[\033[1;32m\]\u@\h \[\033[1;34m\]\w\[\033[0;32m\]"'$(__git_ps1 " (%s)")'"\[\033[0;34m\]$ \[\033[0;00m\]'" >> /etc/bash.bashrc
+
 # Limpieza final
 RUN apt autoremove -y && apt-get clean && rm -rf /var/lib/apt/lists/*
 RUN chmod -R 777 /config
