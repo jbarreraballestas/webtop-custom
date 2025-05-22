@@ -8,6 +8,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     git \
     htop \
     curl \
+    nano \
     wget \
     pgp \
     net-tools \
@@ -31,13 +32,17 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     php8.4-sqlite3 && \
     curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer && \
     echo 'export PATH="$PATH:$HOME/.config/composer/vendor/bin"' >> /etc/bash.bashrc
-
-# -------------------- Visual Studio Code --------------------
+    
+    # -------------------- Visual Studio Code --------------------
 RUN wget -O vscode.deb https://go.microsoft.com/fwlink/?LinkID=760868 && \
     apt install ./vscode.deb && \
     rm -f vscode.deb && \
     echo "alias code='code --no-sandbox --user-data-dir=/tmp/vscode-data'" >> /etc/bash.bashrc
 
+# -------------------- Git - Bash --------------------
+RUN apt-get install -y bash-completion && \
+    curl -o /etc/bash_completion.d/git-prompt.sh https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh && \
+    echo 'source /etc/bash_completion.d/git-prompt.sh' >> /etc/bash.bashrc
 # Limpieza final
 RUN apt autoremove -y && apt-get clean && rm -rf /var/lib/apt/lists/*
 RUN chmod -R 777 /config
