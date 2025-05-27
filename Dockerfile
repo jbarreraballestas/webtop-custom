@@ -12,17 +12,9 @@ RUN apt update && apt install -y --no-install-recommends \
     lsb-release \
     apt-transport-https \
     unzip locales sqlite3 firefox
-
-# RUN apt autoremove --purge -y firefox
-# Agrega claves y repositorio de Brave
-RUN apt update && apt install -y curl gnupg && \
-    curl -fsSLo /usr/share/keyrings/brave-browser-archive-keyring.gpg \
-      https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg && \
-    echo "deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg] \
-      https://brave-browser-apt-release.s3.brave.com/ stable main" | \
-      tee /etc/apt/sources.list.d/brave-browser-release.list && \
-    apt update && apt install -y brave-browser
-RUN echo "alias brave-browser='brave-browser --no-sandbox --disable-gpu --disable-dev-shm-usage'" >> /etc/bash.bashrc
+# -------------------- Firefox - Extensiones por políticas --------------------
+RUN mkdir -p /etc/firefox/policies && \
+    echo '{"policies":{"Extensions":{"Install": ["https://addons.mozilla.org/firefox/downloads/latest/ublock-origin/latest.xpi"]}}}' > /etc/firefox/policies/policies.json
 
 # -------------------- PHP 8.4 + Composer --------------------
 RUN add-apt-repository ppa:ondrej/php -y && \
