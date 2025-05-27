@@ -1,5 +1,5 @@
 #!/bin/bash
-read -p "¿Eliminar carpeta ./config local? (y/N): " wipe
+read -p "¿Eliminar carpeta ./config local? Esto eliminará toda la información del directorio home del usuario, ¿Está seguro que desea continuar? (y/N): " wipe
 docker compose down --volumes --remove-orphans
 if [[ "$wipe" == "y" ]]; then
   rm -rf ./config

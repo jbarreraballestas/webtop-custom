@@ -5,22 +5,24 @@ ENV LANG=C.UTF-8
 
 # Actualizamos sistema y herramientas básicas
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    git \
-    htop \
-    curl \
-    nano \
-    wget \
-    pgp \
-    net-tools \
+    git htop curl nano wget pgp net-tools \
     gnupg2 \
     software-properties-common \
     ca-certificates \
     lsb-release \
     apt-transport-https \
-    unzip \
-    locales \
-    sqlite3 \
-    && apt-get clean && rm -rf /var/lib/apt/lists/*
+    unzip locales sqlite3 firefox
+
+# RUN apt autoremove --purge -y firefox
+# Agrega claves y repositorio de Brave
+RUN apt-get update && apt-get install -y curl gnupg && \
+    curl -fsSLo /usr/share/keyrings/brave-browser-archive-keyring.gpg \
+      https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg && \
+    echo "deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg] \
+      https://brave-browser-apt-release.s3.brave.com/ stable main" | \
+      tee /etc/apt/sources.list.d/brave-browser-release.list && \
+    apt-get update && apt-get install -y brave-browser
+RUN echo "alias brave-browser='brave-browser --no-sandbox --disable-gpu --disable-dev-shm-usage'" >> /etc/bash.bashrc
 
 # -------------------- PHP 8.4 + Composer --------------------
 RUN add-apt-repository ppa:ondrej/php -y && \
@@ -37,7 +39,7 @@ RUN add-apt-repository ppa:ondrej/php -y && \
 RUN wget -O vscode.deb https://go.microsoft.com/fwlink/?LinkID=760868 && \
     apt install ./vscode.deb && \
     rm -f vscode.deb && \
-    echo "alias code='code --no-sandbox --user-data-dir=/tmp/vscode-data'" >> /etc/bash.bashrc
+    echo "alias code='code --no-sandbox'" >> /etc/bash.bashrc
 
 # -------------------- Git - Bash - Colors --------------------
 RUN apt-get install -y bash-completion && \

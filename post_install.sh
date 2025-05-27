@@ -8,7 +8,13 @@ fi
 
 echo "Instalando Laravel global y extensiones de VSCode para el usuario: $USER"
 echo "HOME actual: $HOME"
-
+# Asegurar que npm esté disponible para laravel, angular
+if ! command -v npm &> /dev/null; then
+  echo "⚠️ NPM no está instalado o no está en el PATH."
+  curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+  sudo apt install -y nodejs
+  sudo npm install -g npm
+fi
 # Asegurar que Composer está disponible
 if ! command -v composer &> /dev/null; then
   echo "❌ Composer no está instalado o no está en el PATH."
@@ -41,13 +47,12 @@ if [[ "$laravel" == "y" ]]; then
     code --install-extension JhordyBarrera.laravel-pack-by-novato-pro \
         --user-data-dir="$HOME/.vscode" --no-sandbox
   fi
-  # Asegurar que npm esté disponible para laravel
-  if ! command -v npm &> /dev/null; then
-    echo "⚠️ NPM no está instalado o no está en el PATH."
-    curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
-    sudo apt install -y nodejs
-    sudo npm install -g npm
-  fi
 fi
-
+  # Instalar extensiones de desarrollo remote de microsoft para VSCode
+  read -p "¿Deseas instalar las extensiones de Microsoft Remote Development? (y/N): " remote
+  if [[ "$remote" == "y" ]]; then
+    echo "Instalando extensiones de desarrollo remoto en VSCode..."
+    code --install-extension ms-vscode-remote.vscode-remote-extensionpack \
+        --user-data-dir="$HOME/.vscode" --no-sandbox
+  fi
 echo "✅ Configuración completada."

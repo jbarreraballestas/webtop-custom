@@ -18,5 +18,6 @@ services:
     volumes:
       - ./config:/config
       - ./post_install.sh:/config/post_install.sh:ro
+      - ./launchers:/config/.local/share/applications/
     shm_size: "2gb"
     restart: unless-stopped
