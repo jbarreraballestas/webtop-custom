@@ -4,7 +4,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV LANG=C.UTF-8
 
 # Actualizamos sistema y herramientas básicas
-RUN apt-get update && apt-get install -y --no-install-recommends \
+RUN apt update && apt install -y --no-install-recommends \
     git htop curl nano wget pgp net-tools \
     gnupg2 \
     software-properties-common \
@@ -15,19 +15,19 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 # RUN apt autoremove --purge -y firefox
 # Agrega claves y repositorio de Brave
-RUN apt-get update && apt-get install -y curl gnupg && \
+RUN apt update && apt install -y curl gnupg && \
     curl -fsSLo /usr/share/keyrings/brave-browser-archive-keyring.gpg \
       https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg && \
     echo "deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg] \
       https://brave-browser-apt-release.s3.brave.com/ stable main" | \
       tee /etc/apt/sources.list.d/brave-browser-release.list && \
-    apt-get update && apt-get install -y brave-browser
+    apt update && apt install -y brave-browser
 RUN echo "alias brave-browser='brave-browser --no-sandbox --disable-gpu --disable-dev-shm-usage'" >> /etc/bash.bashrc
 
 # -------------------- PHP 8.4 + Composer --------------------
 RUN add-apt-repository ppa:ondrej/php -y && \
-    apt-get update && \
-    apt-get install -y \
+    apt update && \
+    apt install -y \
     php8.4 php8.4-cli php8.4-common \
     php8.4-fpm php8.4-mbstring php8.4-xml \
     php8.4-curl php8.4-mysql php8.4-zip \
@@ -42,11 +42,11 @@ RUN wget -O vscode.deb https://go.microsoft.com/fwlink/?LinkID=760868 && \
     echo "alias code='code --no-sandbox'" >> /etc/bash.bashrc
 
 # -------------------- Git - Bash - Colors --------------------
-RUN apt-get install -y bash-completion && \
+RUN apt install -y bash-completion && \
     curl -o /etc/bash_completion.d/git-prompt.sh https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh && \
     echo 'source /etc/bash_completion.d/git-prompt.sh' >> /etc/bash.bashrc && \
     echo "export PS1='\[\033[1;32m\]\u@\h \[\033[1;34m\]\w\[\033[0;32m\]"'$(__git_ps1 " (%s)")'"\[\033[0;34m\]$ \[\033[0;00m\]'" >> /etc/bash.bashrc
 
 # Limpieza final
-RUN apt autoremove -y && apt-get clean && rm -rf /var/lib/apt/lists/*
+RUN apt autoremove -y && apt clean && rm -rf /var/lib/apt/lists/*
 RUN chmod -R 777 /config
